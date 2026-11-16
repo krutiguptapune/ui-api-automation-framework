@@ -1,0 +1,25 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+
+# Private environment variables and passwords
+.env
+
+# Test reports
+reports/
+*.html
+
+# Playwright test results
+test-results/
+playwright-report/
+
+# VS Code settings
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
