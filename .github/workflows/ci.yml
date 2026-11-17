@@ -67,3 +67,12 @@ jobs:
           name: failure-screenshots
           path: reports/*.png
           if-no-files-found: ignore
+
+      # Upload Playwright traces
+      - name: Upload Playwright traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: reports/*-trace.zip
+          if-no-files-found: ignore

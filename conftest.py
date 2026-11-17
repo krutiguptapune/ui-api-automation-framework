@@ -25,6 +25,11 @@ def browser(playwright_instance):
 def page(browser, request):
     context = browser.new_context()
     page = context.new_page()
+    page.context.tracing.start(
+    screenshots=True,
+    snapshots=True,
+    sources=True
+    )
 
     yield page
 
@@ -38,7 +43,11 @@ def page(browser, request):
         screenshot_path = f"reports/{request.node.name}.png"
 
         page.screenshot(path=screenshot_path)
-
+    
+    context.tracing.stop(
+    path=f"reports/{request.node.name}-trace.zip"
+    )
+    
     context.close()
 
 @pytest.fixture(scope="session")
