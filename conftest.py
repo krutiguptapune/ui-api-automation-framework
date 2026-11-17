@@ -2,6 +2,8 @@ import pytest
 import os
 from playwright.sync_api import sync_playwright
 
+from utils.api_client import APIClient
+
 
 @pytest.fixture(scope="session")
 def playwright_instance():
@@ -25,29 +27,41 @@ def browser(playwright_instance):
 def page(browser, request):
     context = browser.new_context()
     page = context.new_page()
-    page.context.tracing.start(
-    screenshots=True,
-    snapshots=True,
-    sources=True
+
+    # Start recording browser activity
+    context.tracing.start(
+        screenshots=True,
+        snapshots=True,
+        sources=True
     )
 
     yield page
 
     # Check whether the test failed
-    if hasattr(request.node, "rep_call") and request.node.rep_call.failed:
+    test_failed = (
+        hasattr(request.node, "rep_call")
+        and request.node.rep_call.failed
+    )
 
-        # Create reports folder if it doesn't exist
+    if test_failed:
+
+        # Create reports folder
         os.makedirs("reports", exist_ok=True)
 
-        # Capture screenshot
-        screenshot_path = f"reports/{request.node.name}.png"
+        # Capture failure screenshot
+        page.screenshot(
+            path=f"reports/{request.node.name}.png"
+        )
 
-        page.screenshot(path=screenshot_path)
-    
-    context.tracing.stop(
-    path=f"reports/{request.node.name}-trace.zip"
-    )
-    
+        # Save trace recording
+        context.tracing.stop(
+            path=f"reports/{request.node.name}-trace.zip"
+        )
+
+    else:
+        # Stop recording without saving successful traces
+        context.tracing.stop()
+
     context.close()
 
 @pytest.fixture(scope="session")
@@ -66,3 +80,7 @@ def pytest_runtest_makereport(item, call):
 
     if report.when == "call":
         item.rep_call = report
+
+@pytest.fixture(scope="session")
+def api_client(api_request_context):
+    return APIClient(api_request_context)

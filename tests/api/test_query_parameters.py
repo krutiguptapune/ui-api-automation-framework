@@ -6,13 +6,13 @@ load_dotenv()
 
 @pytest.mark.api
 @pytest.mark.regression
-def test_get_posts_by_user(api_request_context):
+def test_get_posts_by_user(api_client):
 
     # Get API base URL
     base_url = os.getenv("JSONPLACEHOLDER_BASE_URL")
 
     # Send GET request with query parameter
-    response = api_request_context.get(
+    response = api_client.get(
         f"{base_url}/posts",
         params={"userId": 1}
     )

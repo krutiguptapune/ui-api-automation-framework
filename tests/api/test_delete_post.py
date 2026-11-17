@@ -6,13 +6,13 @@ load_dotenv()
 
 @pytest.mark.api
 @pytest.mark.regression
-def test_delete_post(api_request_context):
+def test_delete_post(api_client):
 
     # Get API base URL
     base_url = os.getenv("JSONPLACEHOLDER_BASE_URL")
 
     # Send DELETE request
-    response = api_request_context.delete(
+    response = api_client.delete(
         f"{base_url}/posts/1"
     )
 

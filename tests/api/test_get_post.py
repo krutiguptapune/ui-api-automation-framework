@@ -8,7 +8,7 @@ load_dotenv()
 @pytest.mark.api
 @pytest.mark.smoke
 @pytest.mark.regression
-def test_get_single_post(api_request_context):
+def test_get_single_post(api_client):
 
     # Get API base URL
     base_url = os.getenv("JSONPLACEHOLDER_BASE_URL")
@@ -17,9 +17,9 @@ def test_get_single_post(api_request_context):
     start_time = time.time()
 
     # Send GET request
-    response = api_request_context.get(
-        f"{base_url}/posts/1"
-    )
+    response = api_client.get(
+    f"{base_url}/posts/1"
+)
 
     # Calculate response time in milliseconds
     response_time = (time.time() - start_time) * 1000

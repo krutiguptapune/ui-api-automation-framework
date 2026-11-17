@@ -6,7 +6,7 @@ load_dotenv()
 
 @pytest.mark.api
 @pytest.mark.regression
-def test_create_post(api_request_context):
+def test_create_post(api_client):
 
     # Get API base URL
     base_url = os.getenv("JSONPLACEHOLDER_BASE_URL")
@@ -19,10 +19,10 @@ def test_create_post(api_request_context):
     }
 
     # Send POST request
-    response = api_request_context.post(
-        f"{base_url}/posts",
-        data=post_data
-    )
+    response = api_client.post(
+    f"{base_url}/posts",
+    data=post_data
+)
 
     # Verify status code
     assert response.status == 201

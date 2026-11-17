@@ -6,13 +6,13 @@ load_dotenv()
 
 @pytest.mark.api
 @pytest.mark.regression
-def test_invalid_endpoint(api_request_context):
+def test_invalid_endpoint(api_client):
 
     # Get API base URL
     base_url = os.getenv("JSONPLACEHOLDER_BASE_URL")
 
     # Send request to an invalid endpoint
-    response = api_request_context.get(
+    response = api_client.get(
         f"{base_url}/invalid-endpoint"
     )
 

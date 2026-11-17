@@ -7,7 +7,7 @@ load_dotenv()
 @pytest.mark.api
 @pytest.mark.smoke
 @pytest.mark.regression
-def test_valid_authentication(api_request_context):
+def test_valid_authentication(api_client):
 
     # Get API base URL
     base_url = os.getenv("RESTFUL_BOOKER_BASE_URL")
@@ -19,7 +19,7 @@ def test_valid_authentication(api_request_context):
     }
 
     # Send authentication request
-    response = api_request_context.post(
+    response = api_client.post(
         f"{base_url}/auth",
         data=credentials
     )

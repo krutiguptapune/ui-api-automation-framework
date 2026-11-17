@@ -6,7 +6,7 @@ load_dotenv()
 
 @pytest.mark.api
 @pytest.mark.regression
-def test_update_post(api_request_context):
+def test_update_post(api_client):
 
     # Get API base URL
     base_url = os.getenv("JSONPLACEHOLDER_BASE_URL")
@@ -20,7 +20,7 @@ def test_update_post(api_request_context):
     }
 
     # Send PUT request
-    response = api_request_context.put(
+    response = api_client.put(
         f"{base_url}/posts/1",
         data=updated_data
     )
