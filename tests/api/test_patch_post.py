@@ -1,9 +1,10 @@
 import os
 from dotenv import load_dotenv
+import pytest
 
 load_dotenv()
 
-
+@pytest.mark.api
 def test_patch_post(api_request_context):
 
     # Get API base URL

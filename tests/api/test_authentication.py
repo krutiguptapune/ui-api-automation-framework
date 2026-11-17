@@ -1,9 +1,11 @@
+import pytest
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
+@pytest.mark.api
+@pytest.mark.smoke
 def test_valid_authentication(api_request_context):
 
     # Get API base URL

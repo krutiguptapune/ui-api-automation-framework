@@ -12,7 +12,7 @@ load_dotenv()
 with open("test_data/login_data.json", "r") as file:
     login_data = json.load(file)
 
-
+@pytest.mark.ui
 @pytest.mark.parametrize("scenario", login_data)
 def test_invalid_login(page, scenario):
 

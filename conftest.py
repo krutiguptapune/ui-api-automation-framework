@@ -1,4 +1,5 @@
 import pytest
+import os
 from playwright.sync_api import sync_playwright
 
 
@@ -10,10 +11,15 @@ def playwright_instance():
 
 @pytest.fixture(scope="session")
 def browser(playwright_instance):
-    browser = playwright_instance.chromium.launch(headless=False)
-    yield browser
-    browser.close()
+    headless_mode = os.getenv("CI") == "true"
 
+    browser = playwright_instance.chromium.launch(
+        headless=headless_mode
+    )
+
+    yield browser
+
+    browser.close()
 
 @pytest.fixture()
 def page(browser):

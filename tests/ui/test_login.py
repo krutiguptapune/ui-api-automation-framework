@@ -1,11 +1,13 @@
 import os
 from dotenv import load_dotenv
+import pytest
 from pages.login_page import LoginPage
 
 
 load_dotenv()
 
-
+@pytest.mark.ui
+@pytest.mark.smoke
 def test_valid_login(page):
 
     # Create LoginPage object
