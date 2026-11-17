@@ -1,0 +1,17 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+class Settings:
+
+    SAUCEDEMO_BASE_URL = os.getenv("SAUCEDEMO_BASE_URL")
+    SAUCEDEMO_USERNAME = os.getenv("SAUCEDEMO_USERNAME")
+    SAUCEDEMO_PASSWORD = os.getenv("SAUCEDEMO_PASSWORD")
+
+    JSONPLACEHOLDER_BASE_URL = os.getenv("JSONPLACEHOLDER_BASE_URL")
+    RESTFUL_BOOKER_BASE_URL = os.getenv("RESTFUL_BOOKER_BASE_URL")
+
+    RESTFUL_BOOKER_USERNAME = os.getenv("RESTFUL_BOOKER_USERNAME")
+    RESTFUL_BOOKER_PASSWORD = os.getenv("RESTFUL_BOOKER_PASSWORD")

@@ -1,8 +1,11 @@
+
 import pytest
 import os
 from playwright.sync_api import sync_playwright
-
+from utils.logger import get_logger
 from utils.api_client import APIClient
+
+logger = get_logger("browser")
 
 
 @pytest.fixture(scope="session")
@@ -15,13 +18,17 @@ def playwright_instance():
 def browser(playwright_instance):
     headless_mode = os.getenv("CI") == "true"
 
+    logger.info("Launching Chromium browser")
+
     browser = playwright_instance.chromium.launch(
         headless=headless_mode
     )
 
     yield browser
 
+    logger.info("Closing Chromium browser")
     browser.close()
+
 
 @pytest.fixture()
 def page(browser, request):
@@ -64,6 +71,7 @@ def page(browser, request):
 
     context.close()
 
+
 @pytest.fixture(scope="session")
 def api_request_context(playwright_instance):
     request_context = playwright_instance.request.new_context()
@@ -71,6 +79,7 @@ def api_request_context(playwright_instance):
     yield request_context
 
     request_context.dispose()
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -80,6 +89,7 @@ def pytest_runtest_makereport(item, call):
 
     if report.when == "call":
         item.rep_call = report
+
 
 @pytest.fixture(scope="session")
 def api_client(api_request_context):
