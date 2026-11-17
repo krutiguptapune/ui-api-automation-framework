@@ -1,3 +1,5 @@
+import time
+from playwright._impl._errors import Error
 from utils.logger import get_logger
 
 
@@ -7,32 +9,53 @@ class APIClient:
         self.request_context = request_context
         self.logger = get_logger("api")
 
+    def _request_with_retry(self, method, url, **kwargs):
+
+        for attempt in range(3):
+            try:
+                self.logger.info(
+                    f"{method} request: {url} | Attempt {attempt + 1}"
+                )
+
+                response = getattr(
+                    self.request_context, method.lower()
+                )(url, **kwargs)
+
+                return response
+
+            except Error as error:
+                if attempt == 2:
+                    self.logger.error(
+                        f"{method} request failed after 3 attempts: {error}"
+                    )
+                    raise
+
+                self.logger.warning(
+                    f"Temporary API connection error. Retrying: {error}"
+                )
+                time.sleep(2)
+
     def get(self, url, params=None, headers=None):
-        self.logger.info(f"GET request: {url}")
-        return self.request_context.get(
-            url, params=params, headers=headers
+        return self._request_with_retry(
+            "GET", url, params=params, headers=headers
         )
 
     def post(self, url, data=None, headers=None):
-        self.logger.info(f"POST request: {url}")
-        return self.request_context.post(
-            url, data=data, headers=headers
+        return self._request_with_retry(
+            "POST", url, data=data, headers=headers
         )
 
     def put(self, url, data=None, headers=None):
-        self.logger.info(f"PUT request: {url}")
-        return self.request_context.put(
-            url, data=data, headers=headers
+        return self._request_with_retry(
+            "PUT", url, data=data, headers=headers
         )
 
     def patch(self, url, data=None, headers=None):
-        self.logger.info(f"PATCH request: {url}")
-        return self.request_context.patch(
-            url, data=data, headers=headers
+        return self._request_with_retry(
+            "PATCH", url, data=data, headers=headers
         )
 
     def delete(self, url, headers=None):
-        self.logger.info(f"DELETE request: {url}")
-        return self.request_context.delete(
-            url, headers=headers
+        return self._request_with_retry(
+            "DELETE", url, headers=headers
         )

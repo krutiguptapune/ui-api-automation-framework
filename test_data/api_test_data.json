@@ -1,0 +1,22 @@
+[
+    {
+        "post_id": 1,
+        "expected_user_id": 1
+    },
+    {
+        "post_id": 2,
+        "expected_user_id": 1
+    },
+    {
+        "post_id": 11,
+        "expected_user_id": 2
+    },
+    {
+        "post_id": 21,
+        "expected_user_id": 3
+    },
+    {
+        "post_id": 31,
+        "expected_user_id": 4
+    }
+]
