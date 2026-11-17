@@ -24,3 +24,13 @@ class InventoryPage:
 
     def open_cart(self):
         self.cart_icon.click()
+
+    def add_all_products_to_cart(self):
+        buttons = self.page.locator(
+            '[data-test^="add-to-cart-"]'
+        )
+        for button in buttons.all():
+            button.click()
+
+    def get_product_count(self):
+        return self.product_names.count()

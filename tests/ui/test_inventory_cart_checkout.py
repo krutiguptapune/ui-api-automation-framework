@@ -1,3 +1,4 @@
+
 import os
 import pytest
 from dotenv import load_dotenv
@@ -84,3 +85,67 @@ def test_complete_checkout(page):
     checkout.finish_order()
 
     assert checkout.get_confirmation_message() == "Thank you for your order!"
+
+
+@pytest.mark.ui
+@pytest.mark.regression
+def test_sort_products_z_to_a(page):
+    login_to_saucedemo(page)
+
+    inventory = InventoryPage(page)
+    inventory.sort_products("za")
+
+    names = inventory.get_product_names()
+
+    assert names == sorted(names, reverse=True)
+
+
+@pytest.mark.ui
+@pytest.mark.regression
+def test_sort_products_price_high_to_low(page):
+    login_to_saucedemo(page)
+
+    inventory = InventoryPage(page)
+    inventory.sort_products("hilo")
+
+    prices = inventory.get_product_prices()
+
+    assert prices == sorted(prices, reverse=True)
+
+
+@pytest.mark.ui
+@pytest.mark.regression
+def test_remove_product_from_cart(page):
+    login_to_saucedemo(page)
+
+    inventory = InventoryPage(page)
+    inventory.add_backpack_to_cart()
+    inventory.open_cart()
+
+    cart = CartPage(page)
+    assert "Sauce Labs Backpack" in cart.get_cart_items()
+
+    cart.remove_backpack()
+
+    assert cart.get_cart_count() == 0
+
+
+@pytest.mark.ui
+@pytest.mark.regression
+def test_checkout_without_first_name(page):
+    login_to_saucedemo(page)
+
+    inventory = InventoryPage(page)
+    inventory.add_backpack_to_cart()
+    inventory.open_cart()
+
+    cart = CartPage(page)
+    cart.click_checkout()
+
+    checkout = CheckoutPage(page)
+    checkout.enter_customer_details("", "Gupta", "411001")
+    checkout.click_continue()
+
+    error = page.locator('[data-test="error"]').inner_text()
+
+    assert error == "Error: First Name is required"
