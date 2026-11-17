@@ -6,6 +6,7 @@ load_dotenv()
 
 @pytest.mark.api
 @pytest.mark.smoke
+@pytest.mark.regression
 def test_valid_authentication(api_request_context):
 
     # Get API base URL

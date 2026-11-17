@@ -59,3 +59,11 @@ jobs:
           name: automation-test-report
           path: reports/full-report.html
 
+      # Step 8: Upload failure screenshots
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-screenshots
+          path: reports/*.png
+          if-no-files-found: ignore

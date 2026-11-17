@@ -5,6 +5,7 @@ import pytest
 load_dotenv()
 
 @pytest.mark.api
+@pytest.mark.regression
 def test_invalid_authentication(api_request_context):
 
     # Get API base URL

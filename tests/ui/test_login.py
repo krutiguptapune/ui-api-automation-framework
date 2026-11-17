@@ -8,6 +8,7 @@ load_dotenv()
 
 @pytest.mark.ui
 @pytest.mark.smoke
+@pytest.mark.regression
 def test_valid_login(page):
 
     # Create LoginPage object

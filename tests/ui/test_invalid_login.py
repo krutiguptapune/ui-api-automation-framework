@@ -14,6 +14,7 @@ with open("test_data/login_data.json", "r") as file:
 
 @pytest.mark.ui
 @pytest.mark.parametrize("scenario", login_data)
+@pytest.mark.regression
 def test_invalid_login(page, scenario):
 
     # Create LoginPage object

@@ -5,6 +5,7 @@ import pytest
 load_dotenv()
 
 @pytest.mark.api
+@pytest.mark.regression
 def test_get_posts_by_user(api_request_context):
 
     # Get API base URL
